@@ -18,18 +18,25 @@ $ bun add vite-plugin-fastify-routes -D
 
 ## Usage
 
-```json5
-// package.json
+### Add Scripts
+
+Add the following scripts to your `package.json` file:
+
+```json
 {
   // ...
-  scripts: {
-    dev: 'vite',
-    build: 'vite build',
-    preview: 'vite preview',
-  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  }
   // ...
 }
 ```
+
+### Configure Vite
+
+Configure Vite by creating a `vite.config.ts` file in the root directory of your project, as shown below:
 
 ```ts
 // vite.config.ts
@@ -43,10 +50,7 @@ export default defineConfig({
     host: '127.0.0.1',
     port: 3000,
   },
-  plugins: [
-    fastify(),
-    fastifyRoutes(),
-  ],
+  plugins: [fastify(), fastifyRoutes()],
   resolve: {
     alias: {
       '~': resolve(__dirname, 'src'),
@@ -54,6 +58,10 @@ export default defineConfig({
   },
 });
 ```
+
+### Create the Fastify Application
+
+Create a Fastify application by defining `src/app.ts`:
 
 ```ts
 // src/app.ts
@@ -72,6 +80,10 @@ const app = async (options: FastifyServerOptions = {}) => {
 
 export default app;
 ```
+
+### Start the Server
+
+Start the server by defining `src/server.ts`:
 
 ```ts
 // src/server.ts
@@ -97,6 +109,10 @@ const start = async () => {
 start();
 ```
 
+### Create the Router Plugin
+
+Create the router plugin by defining `src/plugins/router.ts`:
+
 ```ts
 // src/plugins/router.ts
 import plugin from 'fastify-plugin';
@@ -121,6 +137,10 @@ declare module 'virtual:fastify-routes' {
 }
 ```
 
+### Define Routes
+
+Define routes by creating files in the `src/routes` directory:
+
 ```ts
 // src/routes/hello-world/registry.ts
 import type { FastifyInstance } from 'fastify';
@@ -132,6 +152,10 @@ export default async (app: FastifyInstance) => {
   });
 };
 ```
+
+### Route File Naming Convention
+
+The file naming convention for the routes is as follows:
 
 ```ts
 src/routes/hello-world/registry.ts -> /hello-world
