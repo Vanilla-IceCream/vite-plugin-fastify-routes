@@ -44,10 +44,10 @@ devDependencies:
     version: 4.9.5
   vite:
     specifier: ^4.1.1
-    version: 4.3.4(@types/node@18.16.3)
+    version: 4.3.4
   vite-plugin-fastify:
-    specifier: ^1.2.1
-    version: 1.2.1
+    specifier: ^1.2.2
+    version: 1.2.2
   vite-plugin-fastify-routes:
     specifier: link:../
     version: link:..
@@ -296,7 +296,7 @@ packages:
     resolution: {integrity: sha512-ebbEtlI7dxXF5ziNdr05mOY8NnDiPB1XvAlLHctRt/Rc+C3LCOVW5imUVX+mhvUhnNzmPBHewUkOFgGlCxgdAA==}
     dependencies:
       ajv: 8.12.0
-      ajv-formats: 2.1.1(ajv@8.12.0)
+      ajv-formats: 2.1.1
       fast-uri: 2.2.0
     dev: false
 
@@ -587,10 +587,8 @@ packages:
     hasBin: true
     dev: true
 
-  /ajv-formats@2.1.1(ajv@8.12.0):
+  /ajv-formats@2.1.1:
     resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
-    peerDependencies:
-      ajv: ^8.0.0
     peerDependenciesMeta:
       ajv:
         optional: true
@@ -1056,7 +1054,7 @@ packages:
     dependencies:
       '@fastify/deepmerge': 1.3.0
       ajv: 8.12.0
-      ajv-formats: 2.1.1(ajv@8.12.0)
+      ajv-formats: 2.1.1
       fast-deep-equal: 3.1.3
       fast-uri: 2.2.0
       rfdc: 1.3.0
@@ -1970,10 +1968,42 @@ packages:
       - terser
     dev: true
 
-  /vite-plugin-fastify@1.2.1:
-    resolution: {integrity: sha512-ywX3BBflEqCTyEgiKGhbjmUNnKT30Wy2AJX0G/dg6uLVjapdgg7Xi3ZBCIEklCOsK8yMB4Dm/NAYWutfq45v7A==}
+  /vite-plugin-fastify@1.2.2:
+    resolution: {integrity: sha512-wIDzbsRWRt1QiFZqN7GvasEEp3+hpZadtETWVbyobhvuyY7wkHXpZq/djrfMxhbdW4aMm65rliNHZ4Svrm2CdA==}
     dependencies:
       '@fastify/one-line-logger': 1.1.1
+    dev: true
+
+  /vite@4.3.4:
+    resolution: {integrity: sha512-f90aqGBoxSFxWph2b39ae2uHAxm5jFBBdnfueNxZAT1FTpM13ccFQExCaKbR2xFW5atowjleRniQ7onjJ22QEg==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    hasBin: true
+    peerDependencies:
+      '@types/node': '>= 14'
+      less: '*'
+      sass: '*'
+      stylus: '*'
+      sugarss: '*'
+      terser: ^5.4.0
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+      less:
+        optional: true
+      sass:
+        optional: true
+      stylus:
+        optional: true
+      sugarss:
+        optional: true
+      terser:
+        optional: true
+    dependencies:
+      esbuild: 0.17.18
+      postcss: 8.4.23
+      rollup: 3.21.4
+    optionalDependencies:
+      fsevents: 2.3.2
     dev: true
 
   /vite@4.3.4(@types/node@18.16.3):

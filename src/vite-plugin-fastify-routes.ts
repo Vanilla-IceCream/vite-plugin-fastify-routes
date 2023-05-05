@@ -73,7 +73,6 @@ export default function fastifyRoutes(options?: PluginOptions): Plugin {
     },
     configureServer(server) {
       server.watcher.on('add', async (file) => {
-        // console.log('file:add', file);
         server.ws.send({ type: 'full-reload' });
       });
     },
