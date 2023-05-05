@@ -17,10 +17,17 @@ async function createRoutes(options?: PluginOptions) {
       if (match) {
         let path = '/' + match[1];
 
+        // /[...wildcard] -> /*
+        if (/\[\.\.\.([^\]]+)\]/g.test(path)) {
+          path = path.replace(/\[\.\.\.([^\]]+)\]/g, '*');
+        }
+
+        // /[[id]] -> /:id?
         if (/\[\[(.+?)\]\]/g.test(path)) {
           path = path.replace(/\[\[(.+?)\]\]/g, ':$1?');
         }
 
+        // /[id] -> /:id
         if (/\[(.+?)\]/g.test(path)) {
           path = path.replace(/\[(.+?)\]/g, ':$1');
         }

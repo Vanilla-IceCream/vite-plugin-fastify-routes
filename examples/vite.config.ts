@@ -9,10 +9,7 @@ export default defineConfig({
     port: 3000,
   },
   plugins: [
-    fastify({
-      appPath: './src/app.ts',
-      serverPath: './src/server.ts',
-    }),
+    fastify(),
     fastifyRoutes(),
   ],
   resolve: {

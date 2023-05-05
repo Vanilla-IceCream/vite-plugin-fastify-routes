@@ -25,7 +25,7 @@ $ bun add vite-plugin-fastify-routes -D
   scripts: {
     dev: 'vite',
     build: 'vite build',
-    preview: 'node dist/server.mjs',
+    preview: 'vite preview',
   },
   // ...
 }
@@ -44,10 +44,7 @@ export default defineConfig({
     port: 3000,
   },
   plugins: [
-    fastify({
-      appPath: './src/app.ts',
-      serverPath: './src/server.ts',
-    }),
+    fastify(),
     fastifyRoutes(),
   ],
   resolve: {
@@ -63,12 +60,12 @@ export default defineConfig({
 import type { FastifyServerOptions } from 'fastify';
 import fastify from 'fastify';
 
+import router from '~/plugins/router';
+
 const app = async (options: FastifyServerOptions = {}) => {
   const app = fastify(options);
 
-  app.get('/api/hello-world', async (req, reply) => {
-    return reply.send('Hello, World!');
-  });
+  app.register(router);
 
   return app;
 };
@@ -81,7 +78,13 @@ export default app;
 import app from './app';
 
 const start = async () => {
-  const server = await app();
+  const server = await app({
+    logger: {
+      transport: {
+        target: '@fastify/one-line-logger',
+      },
+    },
+  });
 
   try {
     server.listen({ host: '127.0.0.1', port: 3000 });
@@ -92,4 +95,63 @@ const start = async () => {
 };
 
 start();
+```
+
+```ts
+// src/plugins/router.ts
+import plugin from 'fastify-plugin';
+
+import routes from 'virtual:fastify-routes';
+
+export default plugin(
+  async (app) => {
+    routes(app, { prefix: '/api' });
+  },
+  { name: 'router' },
+);
+```
+
+```ts
+// shims.d.ts
+declare module 'virtual:fastify-routes' {
+  import type { FastifyPluginAsync } from 'fastify';
+  type RouteOptions = { prefix?: string };
+  const routes: FastifyPluginAsync<RouteOptions>;
+  export default routes;
+}
+```
+
+```ts
+// src/routes/hello-world/registry.ts
+import type { FastifyInstance } from 'fastify';
+
+export default async (app: FastifyInstance) => {
+  // curl http://127.0.0.1:3000/api/hello-world
+  app.get('', async () => {
+    return { message: 'hello-world' };
+  });
+};
+```
+
+```ts
+src/routes/hello-world/registry.ts -> /hello-world
+
+src/routes/products/registry.ts -> /products
+src/routes/products/[id]/registry.ts -> /products/:id
+
+src/routes/posts/[[title]]/registry.ts -> /posts/:title?
+
+src/routes/blog/[...info]/registry.ts -> /blog/*
+```
+
+```ts
+// path/to/registry.ts
+import type { FastifyInstance } from 'fastify';
+
+export default async (app: FastifyInstance) => {
+  // The path parameter can be initialized with an empty string.
+  app.get('', async () => {
+    // ...
+  });
+};
 ```
