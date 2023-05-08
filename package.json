@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-fastify-routes",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "File system based routing for Fastify applications using Vite.",
   "main": "./dist/vite-plugin-fastify-routes.cjs",
   "module": "./dist/vite-plugin-fastify-routes.js",

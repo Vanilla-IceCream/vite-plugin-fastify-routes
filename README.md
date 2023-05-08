@@ -157,7 +157,7 @@ export default async (app: FastifyInstance) => {
 
 The file naming convention for the routes is as follows:
 
-```ts
+```coffee
 src/routes/hello-world/registry.ts -> /hello-world
 
 src/routes/products/registry.ts -> /products
@@ -166,6 +166,9 @@ src/routes/products/[id]/registry.ts -> /products/:id
 src/routes/posts/[[title]]/registry.ts -> /posts/:title?
 
 src/routes/blog/[...info]/registry.ts -> /blog/*
+
+src/routes/(group)/foo/registry.ts -> /foo
+src/routes/(group)/bar/registry.ts -> /bar
 ```
 
 ```ts
