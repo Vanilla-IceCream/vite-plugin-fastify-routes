@@ -169,6 +169,8 @@ src/routes/blog/[...info]/registry.ts -> /blog/*
 
 src/routes/(group)/foo/registry.ts -> /foo
 src/routes/(group)/bar/registry.ts -> /bar
+
+src/routes/(freeze)/registry.ts -> /
 ```
 
 ```ts

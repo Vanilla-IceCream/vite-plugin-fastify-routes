@@ -8,34 +8,27 @@ interface PluginOptions {
 async function createRoutes(options?: PluginOptions) {
   const dirs = options?.dirs || 'routes';
 
-  const files = await glob(`src/${dirs}/**/registry.ts`);
+  const files = await glob(`src/${dirs}/**/registry.{ts,js}`);
 
   const paths = [...files]
     .map((file) => {
-      const match = file.match(new RegExp(`^src\\/${dirs}\\/(.*)\\/registry\\.ts$`));
+      const match = file.match(new RegExp(`^src\\/${dirs}\\/(.*)\\/registry\\.(ts|js)$`));
 
       if (match) {
         let path = '/' + match[1];
 
         // /(group) ->
-        if (/\/\(.+?\)/g.test(path)) {
-          path = path.replace(/\/\(.+?\)/g, '');
-        }
+        path = path.replace(/\/\(.+?\)/g, '');
+        if (!path) path += '/';
 
         // /[...wildcard] -> /*
-        if (/\[\.\.\.([^\]]+)\]/g.test(path)) {
-          path = path.replace(/\[\.\.\.([^\]]+)\]/g, '*');
-        }
+        path = path.replace(/\[\.\.\.([^\]]+)\]/g, '*');
 
         // /[[id]] -> /:id?
-        if (/\[\[(.+?)\]\]/g.test(path)) {
-          path = path.replace(/\[\[(.+?)\]\]/g, ':$1?');
-        }
+        path = path.replace(/\[\[(.+?)\]\]/g, ':$1?');
 
         // /[id] -> /:id
-        if (/\[(.+?)\]/g.test(path)) {
-          path = path.replace(/\[(.+?)\]/g, ':$1');
-        }
+        path = path.replace(/\[(.+?)\]/g, ':$1');
 
         return path;
       }
@@ -52,12 +45,10 @@ async function createRoutes(options?: PluginOptions) {
   });
 
   return `
-    const routes = (app, opts) => {
+    export default (app, opts) => {
       const { prefix } = opts;
       ${lines.join('')}
     };
-
-    export default routes;
   `;
 }
 
