@@ -1,18 +1,19 @@
 import type { Plugin } from 'vite';
+import path from 'path';
 import { glob } from 'glob';
 
 interface PluginOptions {
   dirs?: string;
 }
 
-async function createRoutes(options?: PluginOptions) {
-  const dirs = options?.dirs || 'routes';
+async function generateRoutes(options?: PluginOptions) {
+  const dirs = options?.dirs || path.resolve(process.cwd(), 'src/routes');
 
-  const files = await glob(`src/${dirs}/**/registry.{ts,js}`);
+  const files = await glob(`${dirs}/**/registry.{ts,js}`);
 
   const paths = [...files]
     .map((file) => {
-      const match = file.match(new RegExp(`^src\\/${dirs}\\/(.*)\\/registry\\.(ts|js)$`));
+      const match = file.match(new RegExp(`^${dirs}\\/(.*)\\/registry\\.(ts|js)$`));
 
       if (match) {
         let path = '/' + match[1];
@@ -40,7 +41,7 @@ async function createRoutes(options?: PluginOptions) {
   const lines: string[] = [];
 
   files.forEach((item, index) => {
-    const mod = `import('${item.replace('src', '~')}')`;
+    const mod = `import('${item}')`;
     lines.push(`app.register(${mod}, { prefix: prefix + '${paths[index]}' });`);
   });
 
@@ -62,7 +63,7 @@ export default function fastifyRoutes(options?: PluginOptions): Plugin {
     },
     async load(id) {
       if (id === 'virtual:fastify-routes') {
-        return createRoutes(options);
+        return generateRoutes(options);
       }
 
       return null;
