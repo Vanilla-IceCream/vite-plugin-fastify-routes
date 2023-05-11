@@ -127,14 +127,21 @@ export default plugin(
 );
 ```
 
+#### Type
+
+```diff
+// tsconfig.json
+  "types": [
+    // ...
++   "vite-plugin-fastify-routes/client",
+  ],
+```
+
+or
+
 ```ts
-// shims.d.ts
-declare module 'virtual:fastify-routes' {
-  import type { FastifyPluginAsync } from 'fastify';
-  type RouteOptions = { prefix?: string };
-  const routes: FastifyPluginAsync<RouteOptions>;
-  export default routes;
-}
+// vite-env.d.ts
+/// <reference types="vite-plugin-fastify-routes/client" />
 ```
 
 ### Define Routes
