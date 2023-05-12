@@ -3,17 +3,20 @@ import path from 'path';
 import { glob } from 'glob';
 
 interface PluginOptions {
-  dirs?: string;
+  /**
+   * Directory of the `routes`. Defaults to `src/routes`.
+   */
+  routesDir?: string;
 }
 
 async function generateRoutes(options?: PluginOptions) {
-  const dirs = options?.dirs || path.resolve(process.cwd(), 'src/routes');
+  const routesDir = options?.routesDir || path.resolve(process.cwd(), 'src/routes');
 
-  const files = await glob(`${dirs}/**/registry.{ts,js}`);
+  const files = await glob(`${routesDir}/**/registry.{ts,js}`);
 
   const paths = [...files]
     .map((file) => {
-      const match = file.match(new RegExp(`^${dirs}\\/(.*)\\/registry\\.(ts|js)$`));
+      const match = file.match(new RegExp(`^${routesDir}\\/(.*)\\/registry\\.(ts|js)$`));
 
       if (match) {
         let path = '/' + match[1];
@@ -69,8 +72,9 @@ export default function fastifyRoutes(options?: PluginOptions): Plugin {
       return null;
     },
     configureServer(server) {
-      server.watcher.on('add', async (file) => {
-        server.ws.send({ type: 'full-reload' });
+      server.watcher.on('add', async (filePath) => {
+        const fileExtension = path.basename(filePath);
+        if (/^registry\.(ts|js)$/.test(fileExtension)) server.restart();
       });
     },
   };
