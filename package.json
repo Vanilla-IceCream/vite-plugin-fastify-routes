@@ -1,7 +1,7 @@
 {
   "name": "vite-plugin-fastify-routes",
-  "version": "0.4.0",
-  "description": "File system based routing for Fastify applications using Vite.",
+  "version": "1.0.1",
+  "description": "File-based routing for Fastify applications using Vite.",
   "main": "./dist/vite-plugin-fastify-routes.cjs",
   "module": "./dist/vite-plugin-fastify-routes.js",
   "types": "./dist/src/vite-plugin-fastify-routes.d.ts",
@@ -22,7 +22,7 @@
   },
   "scripts": {
     "build": "vite build",
-    "test": "vitest --run --coverage"
+    "unit": "vitest --run --coverage"
   },
   "repository": {
     "type": "git",
@@ -40,14 +40,14 @@
   },
   "homepage": "https://github.com/Vanilla-IceCream/vite-plugin-fastify-routes#readme",
   "dependencies": {
-    "glob": "^10.2.3"
+    "glob": "^10.3.3"
   },
   "devDependencies": {
-    "@vitest/coverage-c8": "^0.31.0",
-    "fastify": "^4.17.0",
-    "typescript": "^5.0.4",
-    "vite": "^4.3.5",
-    "vite-plugin-dts": "^2.3.0",
-    "vitest": "^0.31.0"
+    "@vitest/coverage-v8": "^0.33.0",
+    "fastify": "^4.20.0",
+    "typescript": "^5.1.6",
+    "vite": "^4.4.7",
+    "vite-plugin-dts": "^3.3.1",
+    "vitest": "^0.33.0"
   }
 }

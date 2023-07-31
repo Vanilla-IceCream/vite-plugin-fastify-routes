@@ -1,6 +1,6 @@
 # vite-plugin-fastify-routes
 
-File system based routing for Fastify applications using Vite.
+File-based routing for Fastify applications using Vite.
 
 ## Installation
 
@@ -22,7 +22,7 @@ $ bun add vite-plugin-fastify-routes -D
 
 Add the following scripts to your `package.json` file:
 
-```json
+```jsonc
 {
   // ...
   "scripts": {
@@ -129,16 +129,6 @@ export default plugin(
 
 #### Type
 
-```diff
-// tsconfig.json
-  "types": [
-    // ...
-+   "vite-plugin-fastify-routes/client",
-  ],
-```
-
-or
-
 ```ts
 // vite-env.d.ts
 /// <reference types="vite-plugin-fastify-routes/client" />
@@ -149,7 +139,7 @@ or
 Define routes by creating files in the `src/routes` directory:
 
 ```ts
-// src/routes/hello-world/registry.ts
+// src/routes/hello-world/+handler.ts
 import type { FastifyInstance } from 'fastify';
 
 export default async (app: FastifyInstance) => {
@@ -165,23 +155,23 @@ export default async (app: FastifyInstance) => {
 The file naming convention for the routes is as follows:
 
 ```coffee
-src/routes/hello-world/registry.ts -> /hello-world
+src/routes/hello-world/+handler.ts -> /hello-world
 
-src/routes/products/registry.ts -> /products
-src/routes/products/[id]/registry.ts -> /products/:id
+src/routes/products/+handler.ts -> /products
+src/routes/products/[id]/+handler.ts -> /products/:id
 
-src/routes/posts/[[title]]/registry.ts -> /posts/:title?
+src/routes/posts/[[title]]/+handler.ts -> /posts/:title?
 
-src/routes/blog/[...info]/registry.ts -> /blog/*
+src/routes/blog/[...info]/+handler.ts -> /blog/*
 
-src/routes/(group)/foo/registry.ts -> /foo
-src/routes/(group)/bar/registry.ts -> /bar
+src/routes/(group)/foo/+handler.ts -> /foo
+src/routes/(group)/bar/+handler.ts -> /bar
 
-src/routes/(freeze)/registry.ts -> /
+src/routes/(freeze)/+handler.ts -> /
 ```
 
 ```ts
-// path/to/registry.ts
+// path/to/+handler.ts
 import type { FastifyInstance } from 'fastify';
 
 export default async (app: FastifyInstance) => {
