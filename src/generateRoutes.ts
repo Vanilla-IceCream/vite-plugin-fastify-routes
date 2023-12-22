@@ -10,8 +10,10 @@ export default async (options?: PluginOptions) => {
   const routesDir = options?.routesDir || resolve(process.cwd(), 'src', 'routes');
 
   const files = await glob(`${routesDir}/**/+handler.{ts,js}`, { posix: true });
+  // const files = await glob(`${routesDir}/**/+{handler,hook}.{ts,js}`, { posix: true });
 
   const lines: string[] = [];
+  // const routes = [] as any[];
 
   files.forEach((item) => {
     let cur = item;
@@ -41,7 +43,34 @@ export default async (options?: PluginOptions) => {
 
     const mod = `import('${comp}')`;
     lines.push(`app.register(${mod}, { prefix: prefix + '${path}' });`);
+
+    // if (path.includes('+hook')) {
+    //   routes.push({
+    //     path: path.replace(/\/\+hook\.(ts|js)/, ''),
+    //     register: `app.register(${mod});`,
+    //     hook: true,
+    //     level: 0,
+    //   });
+    // } else {
+    //   routes.push({
+    //     path,
+    //     register: `app.register(${mod}, { prefix: prefix + '${path}' });`,
+    //     level: 0,
+    //   });
+    // }
   });
+
+  // routes.forEach((item) => {
+  //   if (item.path) {
+  //     routes
+  //       .filter((route) => route.path && route.hook)
+  //       .forEach((route) => {
+  //         if (item.path.startsWith(route.path)) {
+  //           item.level += 1;
+  //         }
+  //       });
+  //   }
+  // });
 
   return `
     export default (app, opts) => {
