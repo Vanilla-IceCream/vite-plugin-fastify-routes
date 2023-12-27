@@ -186,10 +186,9 @@ export default async (app: FastifyInstance) => {
 
 ```ts
 // src/routes/path/to/+hook.ts
-import type { FastifyInstance } from 'fastify';
 import plugin from 'fastify-plugin';
 
-export default plugin(async (app: FastifyInstance) => {
+export default plugin(async (app) => {
   app.addHook('preHandler', async (request, reply) => {
     await new Promise((resolve, reject) => {
       console.log('preHandler');
