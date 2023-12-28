@@ -26,6 +26,13 @@ export default async (options?: PluginOptions) => {
       cur = cur.replace(routesDir, '');
     }
 
+    // const key = cur
+    //   .replace(/\/\+handler\.(ts|js)/, '')
+    //   .replace(/\/\+hook\.(ts|js)/, '')
+    //   .split('/')
+    //   .filter(Boolean)
+    //   .join('/');
+
     let path = cur.replace(/\/\+handler\.(ts|js)/, '');
 
     // /(group) ->
@@ -50,12 +57,14 @@ export default async (options?: PluginOptions) => {
     //     register: `app.register(${mod});`,
     //     hook: true,
     //     level: 0,
+    //     key,
     //   });
     // } else {
     //   routes.push({
     //     path,
     //     register: `app.register(${mod}, { prefix: prefix + '${path}' });`,
     //     level: 0,
+    //     key,
     //   });
     // }
   });

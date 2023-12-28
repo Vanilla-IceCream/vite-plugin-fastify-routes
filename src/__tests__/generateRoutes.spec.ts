@@ -3,8 +3,8 @@ import { test, expect } from 'vitest';
 
 import generateRoutes from '../generateRoutes';
 
-test('generateRoutes', async () => {
-  const routesDir = resolve(__dirname, '../../examples/src/routes');
+test('params', async () => {
+  const routesDir = resolve(__dirname, '../../examples/params/src/routes');
   const generated = await generateRoutes({ routesDir });
   const routes = generated.replace(new RegExp(routesDir, 'g'), '~/routes');
 
