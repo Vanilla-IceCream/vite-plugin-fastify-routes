@@ -25,6 +25,7 @@ Add the following scripts to your `package.json` file:
 ```jsonc
 {
   // ...
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -183,6 +184,8 @@ export default async (app: FastifyInstance) => {
 ```
 
 ### Define Hooks :x:
+
+Define hooks by creating files in the `src/routes` directory:
 
 ```ts
 // src/routes/path/to/+hook.ts
