@@ -17,6 +17,15 @@ export default plugin(
     //   { prefix: '/api' },
     // );
 
+    // [
+    //   { register: app.register(import('~/routes/(group)/foo/+handler'), { prefix: '/foo' }) },
+    //   [
+    //     { register: app.register(import('~/routes/(group)/bar/+hook')) },
+    //     { register: app.register(import('~/routes/(group)/bar/+handler'), { prefix: '/bar' }) },
+    //     { register: app.register(import('~/routes/(group)/bar/baz/+handler'), { prefix: '/bar/baz' }) },
+    //   ],
+    // ];
+
     routes(app, { prefix: '/api' });
   },
   { name: 'router' },
