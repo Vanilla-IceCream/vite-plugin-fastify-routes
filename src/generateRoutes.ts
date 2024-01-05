@@ -18,7 +18,7 @@ export default async (options?: PluginOptions) => {
 
   files.forEach((item) => {
     let cur = item;
-    let comp = item
+    let comp = item;
     // let comp = item.replace(new RegExp(routesDir, 'g'), '~/routes');
 
     if (isWindows) {
@@ -91,25 +91,15 @@ export default async (options?: PluginOptions) => {
     key: string;
   }
 
-  function createScope(curRoute: any): any {
-    return [
-      {
-        register: 'app.register(async (app) => {',
-      },
-      ...curRoute,
-      {
-        register: '});',
-      },
-    ];
-  }
+  type NestedRoutes = (Route | NestedRoutes)[];
 
   function createRoutes(
     routes: Route[],
     level = 0,
-    curArr: (Route | { register: string })[] = [],
+    curArr: NestedRoutes = [],
     curKeysArr: string[] = [],
   ) {
-    const arr = [] as (Route | { register: string })[];
+    const arr = [] as NestedRoutes;
     const keysArr = [] as string[];
 
     const hooks = routes.filter((r) => r.hook);
@@ -133,20 +123,32 @@ export default async (options?: PluginOptions) => {
     for (let i = 0; i < hooksMaxLevel.length; i++) {
       const hook = hooksMaxLevel[i];
 
-      if (curKeysArr.join(',').includes(hook.key)) {
+      if (curKeysArr.filter((ck) => ck.startsWith(hook.key)).length) {
         const sameLayer = routes.filter(
           (r) => r.key.startsWith(hook.key) && r.level === maxLevelOfHooks,
         );
 
-        const pick = [...sameLayer, curArr];
+        const got = curArr
+          .map((subArray) => {
+            if (Array.isArray(subArray)) {
+              return subArray.filter(
+                (route) => !Array.isArray(route) && route.key.startsWith(hook.key),
+              );
+            }
 
-        arr.push(createScope(pick));
+            return subArray;
+          })
+          .filter((subArray) => Array.isArray(subArray) && subArray.length);
+
+        const pick = [...sameLayer, ...got];
+
+        arr.push(pick);
       } else {
         const pick = routes.filter(
           (r) => r.key.startsWith(hook.key) && r.level === maxLevelOfHooks,
         );
 
-        arr.push(...createScope(pick));
+        arr.push(pick);
       }
 
       keysArr.push(hook.key);
@@ -156,6 +158,16 @@ export default async (options?: PluginOptions) => {
   }
 
   const created = createRoutes(routes);
+
+  function createScope(curRoute: any[]): any[] {
+    return [
+      { register: 'app.register(async (app) => {' },
+      ...curRoute.map((item) => (Array.isArray(item) ? createScope(item) : item)),
+      { register: '});' },
+    ];
+  }
+
+  const scoped = createScope(created);
 
   function extractRegister(data: any[], result: string[] = []) {
     for (const item of data) {
@@ -172,7 +184,7 @@ export default async (options?: PluginOptions) => {
   }
 
   const result: string[] = [];
-  extractRegister(created, result);
+  extractRegister(scoped, result);
 
   return `
 export default (app, opts) => {
