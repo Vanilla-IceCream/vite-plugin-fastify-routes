@@ -5,6 +5,16 @@ import maxBy from 'lodash.maxby';
 
 import type { PluginOptions } from './types';
 
+interface Route {
+  path: string;
+  register: string;
+  hook?: boolean;
+  level: number;
+  key: string;
+}
+
+type NestedRoutes = (Route | NestedRoutes)[];
+
 const isWindows = os.type() === 'Windows_NT';
 
 export default async (options?: PluginOptions) => {
@@ -14,7 +24,7 @@ export default async (options?: PluginOptions) => {
   const files = await glob(`${routesDir}/**/+{handler,hook}.{ts,js}`, { posix: true });
 
   const lines: string[] = [];
-  const routes = [] as any[];
+  const routes = [] as Route[];
 
   files.forEach((item) => {
     let cur = item;
@@ -83,16 +93,6 @@ export default async (options?: PluginOptions) => {
     }
   });
 
-  interface Route {
-    path: string;
-    register: string;
-    hook?: boolean;
-    level: number;
-    key: string;
-  }
-
-  type NestedRoutes = (Route | NestedRoutes)[];
-
   function createRoutes(
     routes: Route[],
     level = 0,
@@ -114,7 +114,6 @@ export default async (options?: PluginOptions) => {
 
     if (maxLevelOfHooks === 0) {
       const rootRoutes = routes.filter((r) => r.level === 0);
-
       return [...rootRoutes, ...curArr];
     }
 
@@ -189,7 +188,7 @@ export default async (options?: PluginOptions) => {
   return `
 export default (app, opts) => {
   const { prefix } = opts;
-  ${result.join('\n')}
+  ${result.join('')}
 };
 `;
 };
