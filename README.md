@@ -51,7 +51,10 @@ export default defineConfig({
     host: '127.0.0.1',
     port: 3000,
   },
-  plugins: [fastify(), fastifyRoutes()],
+  plugins: [
+    fastify(),
+    fastifyRoutes(), // Default: { routesDir: './src/routes' }
+  ],
   resolve: {
     alias: {
       '~': resolve(__dirname, 'src'),
@@ -135,7 +138,7 @@ export default plugin(
 /// <reference types="vite-plugin-fastify-routes/client" />
 ```
 
-### Define Routes
+### Define Routes (Route Handlers)
 
 Define routes by creating files in the `src/routes` directory:
 
@@ -172,18 +175,18 @@ src/routes/(freeze)/+handler.ts -> /
 ```
 
 ```ts
-// path/to/+handler.ts
+// src/routes/path/to/+handler.ts
 import type { FastifyInstance } from 'fastify';
 
 export default async (app: FastifyInstance) => {
   // The path parameter can be initialized with an empty string.
   app.get('', async () => {
-    // ...
+    // Focus on your handler here
   });
 };
 ```
 
-### Define Hooks :x:
+### Define Hooks (Middleware)
 
 Define hooks by creating files in the `src/routes` directory:
 
