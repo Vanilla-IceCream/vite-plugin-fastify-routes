@@ -29,8 +29,8 @@ Add the following scripts to your `package.json` file:
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
-  }
+    "preview": "vite preview",
+  },
   // ...
 }
 ```
@@ -140,7 +140,13 @@ export default plugin(
 
 ### Define Routes (Route Handlers)
 
-Define routes by creating files in the `src/routes` directory:
+Define [routes](https://fastify.dev/docs/latest/Reference/Routes/#shorthand-declaration) by creating a `+handler.ts` (or `.js`) file in the `src/routes` directory:
+
+```sh
+src/routes/path/to/+handler.ts
+# or
+src/routes/path/to/+handler.js
+```
 
 ```ts
 // src/routes/hello-world/+handler.ts
@@ -188,7 +194,13 @@ export default async (app: FastifyInstance) => {
 
 ### Define Hooks (Middleware)
 
-Define hooks by creating files in the `src/routes` directory:
+Define [hooks](https://fastify.dev/docs/latest/Reference/Hooks/#requestreply-hooks) by creating a `+hook.ts` (or `.js`) file in the `src/routes` directory:
+
+```sh
+src/routes/path/to/+hook.ts
+# or
+src/routes/path/to/+hook.js
+```
 
 ```ts
 // src/routes/path/to/+hook.ts
