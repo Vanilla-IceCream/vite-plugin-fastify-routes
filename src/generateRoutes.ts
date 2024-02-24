@@ -23,7 +23,6 @@ export default async (options?: PluginOptions) => {
   // const files = await glob(`${routesDir}/**/+handler.{ts,js}`, { posix: true });
   const files = await glob(`${routesDir}/**/+{handler,hook}.{ts,js}`, { posix: true });
 
-  const lines: string[] = [];
   const routes = [] as Route[];
 
   files.forEach((item) => {
@@ -33,7 +32,7 @@ export default async (options?: PluginOptions) => {
 
     if (isWindows) {
       cur = resolve(process.cwd(), cur).replace(routesDir, '').replace(/\\/g, '/');
-      comp = resolve(process.cwd(), comp);
+      comp = resolve(process.cwd(), comp).replace(/\\/g, '\\\\');
     } else {
       cur = cur.replace(routesDir, '');
     }
@@ -61,7 +60,6 @@ export default async (options?: PluginOptions) => {
     path = path.replace(/\[(.+?)\]/g, ':$1');
 
     const mod = `import('${comp}')`;
-    lines.push(`app.register(${mod}, { prefix: prefix + '${path}' });`);
 
     if (path.includes('+hook')) {
       routes.push({
