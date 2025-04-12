@@ -22,7 +22,12 @@ export default function fastifyRoutes(options?: PluginOptions): Plugin {
     configureServer(server) {
       server.watcher.on('add', async (filePath) => {
         const fileExtension = path.basename(filePath);
-        if (/^\+handler\.(ts|js)$/.test(fileExtension)) server.restart();
+        if (/^\+(handler|hook)\.(ts|js)$/.test(fileExtension)) server.restart();
+      });
+
+      server.watcher.on('unlink', async (filePath) => {
+        const fileExtension = path.basename(filePath);
+        if (/^\+(handler|hook)\.(ts|js)$/.test(fileExtension)) server.restart();
       });
     },
   };

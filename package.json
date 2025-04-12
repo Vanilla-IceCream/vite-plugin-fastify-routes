@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-fastify-routes",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "File-based routing for Fastify applications using Vite.",
   "main": "./dist/vite-plugin-fastify-routes.cjs",
   "module": "./dist/vite-plugin-fastify-routes.js",
