@@ -7,15 +7,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@fastify/one-line-logger": "^2.0.0",
-    "fastify": "^5.0.0",
+    "@fastify/one-line-logger": "^2.0.2",
+    "fastify": "^5.4.0",
     "fastify-plugin": "^5.0.1"
   },
   "devDependencies": {
     "process-envify": "^2.0.0",
-    "typescript": "^5.6.2",
-    "vite": "^5.4.8",
-    "vite-plugin-fastify": "^1.2.5",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "vite-plugin-fastify": "^1.2.6",
     "vite-plugin-fastify-routes": "workspace:^"
   }
 }

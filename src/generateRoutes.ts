@@ -19,10 +19,7 @@ const isWindows = os.type() === 'Windows_NT';
 
 export default async (options?: PluginOptions) => {
   const routesDir = options?.routesDir || resolve(process.cwd(), 'src', 'routes');
-
-  // const files = await glob(`${routesDir}/**/+handler.{ts,js}`, { posix: true });
-  const files = await glob(`${routesDir}/**/+{handler,hook}.{ts,js}`, { posix: true });
-
+  const files = await glob(`${routesDir}/**/+@(handler|hook).@(ts|js)`, { posix: true });
   const routes = [] as Route[];
 
   files.forEach((item) => {
@@ -95,7 +92,7 @@ export default async (options?: PluginOptions) => {
     routes: Route[],
     level = 0,
     curArr: NestedRoutes = [],
-    curKeysArr: string[] = [],
+    curKeysArr: string[] = []
   ) {
     const arr = [] as NestedRoutes;
     const keysArr = [] as string[];
@@ -122,14 +119,14 @@ export default async (options?: PluginOptions) => {
 
       if (curKeysArr.filter((ck) => ck.startsWith(hook.key)).length) {
         const sameLayer = routes.filter(
-          (r) => r.key.startsWith(hook.key) && r.level === maxLevelOfHooks,
+          (r) => r.key.startsWith(hook.key) && r.level === maxLevelOfHooks
         );
 
         const got = curArr
           .map((subArray) => {
             if (Array.isArray(subArray)) {
               return subArray.filter(
-                (route) => !Array.isArray(route) && route.key.startsWith(hook.key),
+                (route) => !Array.isArray(route) && route.key.startsWith(hook.key)
               );
             }
 
@@ -142,7 +139,7 @@ export default async (options?: PluginOptions) => {
         arr.push(pick);
       } else {
         const pick = routes.filter(
-          (r) => r.key.startsWith(hook.key) && r.level === maxLevelOfHooks,
+          (r) => r.key.startsWith(hook.key) && r.level === maxLevelOfHooks
         );
 
         arr.push(pick);
